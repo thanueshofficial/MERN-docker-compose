@@ -1,21 +1,12 @@
-# Stage 1: Install dependencies
-FROM node:20-alpine AS builder
+FROM node:18.9.1
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json .
 
-RUN npm ci --omit=dev
+RUN npm install
 
 COPY . .
-
-# Stage 2: Production Image
-FROM node:20-alpine
-
-WORKDIR /app
-
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app .
 
 EXPOSE 5050
 
